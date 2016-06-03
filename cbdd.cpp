@@ -1,0 +1,129 @@
+#include "cbdd.h"
+#include "ccapteur.h"
+
+
+CBdd::CBdd()
+{
+    QString databaseType = "QMYSQL";
+    QString databaseHostname = "192.168.2.78";
+    QString databaseName = "aies2016";
+    QString databaseUsername = "aies2016";
+    QString databasePassword = "aies2016";
+
+    Aies_bdd =QSqlDatabase::addDatabase(databaseType);
+    Aies_bdd.setDatabaseName(databaseName);
+    Aies_bdd.setHostName(databaseHostname);
+    Aies_bdd.setUserName(databaseUsername);
+    Aies_bdd.setPassword(databasePassword);
+}
+
+CBdd::~CBdd()
+{
+
+}
+
+QString CBdd::getRpi()
+{
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+        return "-1";
+    }
+    else
+    {
+        QSqlQuery Aies_query("SELECT * FROM rpi;");
+        while(Aies_query.next())
+        {
+            QString nameRpi = Aies_query.value(1).toString();
+            QString ipRpi = Aies_query.value(2).toString();
+            QString macRpi = Aies_query.value(3).toString();
+            QString zoneRpi = Aies_query.value(4).toString();
+            fullRpiData += nameRpi + ";" + ipRpi + ";" + macRpi + ";" + zoneRpi + ";";
+        }
+        Aies_bdd.close();
+        return fullRpiData;
+    }
+}
+
+QString CBdd::getRefreshTime()
+{
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+        return "-1";
+    }
+    else
+    {
+        QSqlQuery Aies_query("SELECT * FROM slideshow;");
+        while(Aies_query.next())
+        {
+            QString RefreshTime = Aies_query.value(33).toString();
+            fullRpiData += RefreshTime + ";";
+        }
+        Aies_bdd.close();
+        return fullRpiData;
+    }
+}
+
+QString CBdd::getUrgencyState()
+{
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+        return "-1";
+    }
+    else
+    {
+        QSqlQuery Aies_query("SELECT * FROM urgency;");
+        while(Aies_query.next())
+        {
+            QString isOn = Aies_query.value(0).toString();
+            fullRpiData += isOn + ";";
+        }
+        Aies_bdd.close();
+        return fullRpiData;
+    }
+}
+
+QString CBdd::getZone(QString mac)
+{
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+        return "-1";
+    }
+    else
+    {
+        query = "SELECT zone_id FROM rpi WHERE mac = '"+mac+"';";
+        QSqlQuery Aies_query(query);
+        while(Aies_query.next())
+        {
+            QString this_Zone = Aies_query.value(0).toString();
+            fullRpiData = this_Zone;
+        }
+        Aies_bdd.close();
+        return fullRpiData;
+    }
+}
+
+QString CBdd::savePresence()
+{/*
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+        return "-1";
+    }
+    else
+    {
+        presence = capteur.getPresence();
+        query = "UPDATE sensors SET temperature= '"+presence+"';";
+        QSqlQuery Aies_query(query);
+        Aies_bdd.close();
+    }*/
+}
+

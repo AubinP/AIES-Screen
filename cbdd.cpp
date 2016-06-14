@@ -46,48 +46,6 @@ QString CBdd::getRpi()
     }
 }
 
-QString CBdd::getRefreshTime()
-{
-    fullRpiData = "";
-    if(!Aies_bdd.open())
-    {
-        qDebug("Ouverture de la base de donnée impossible");
-        return "-1";
-    }
-    else
-    {
-        QSqlQuery Aies_query("SELECT * FROM slideshow;");
-        while(Aies_query.next())
-        {
-            QString RefreshTime = Aies_query.value(33).toString();
-            fullRpiData += RefreshTime + ";";
-        }
-        Aies_bdd.close();
-        return fullRpiData;
-    }
-}
-
-QString CBdd::getUrgencyState()
-{
-    fullRpiData = "";
-    if(!Aies_bdd.open())
-    {
-        qDebug("Ouverture de la base de donnée impossible");
-        return "-1";
-    }
-    else
-    {
-        QSqlQuery Aies_query("SELECT * FROM urgency;");
-        while(Aies_query.next())
-        {
-            QString isOn = Aies_query.value(0).toString();
-            fullRpiData += isOn + ";";
-        }
-        Aies_bdd.close();
-        return fullRpiData;
-    }
-}
-
 QString CBdd::getZone(QString mac)
 {
     fullRpiData = "";
@@ -110,8 +68,23 @@ QString CBdd::getZone(QString mac)
     }
 }
 
-QString CBdd::savePresence()
-{/*
+void CBdd::setCapteurs(QString Query)
+{
+    fullRpiData = "";
+    if(!Aies_bdd.open())
+    {
+        qDebug("Ouverture de la base de donnée impossible");
+    }
+    else
+    {
+        QSqlQuery Aies_query;
+        Aies_query.exec(Query);
+        Aies_bdd.close();
+    }
+}
+
+QString CBdd::getCurrentrpi(QString macaddr)
+{
     fullRpiData = "";
     if(!Aies_bdd.open())
     {
@@ -120,10 +93,14 @@ QString CBdd::savePresence()
     }
     else
     {
-        presence = capteur.getPresence();
-        query = "UPDATE sensors SET temperature= '"+presence+"';";
+        query = "SELECT name FROM rpi WHERE mac = '"+macaddr+"';";
         QSqlQuery Aies_query(query);
+        while(Aies_query.next())
+        {
+            QString this_Zone = Aies_query.value(0).toString();
+            fullRpiData = this_Zone;
+        }
         Aies_bdd.close();
-    }*/
+        return fullRpiData;
+    }
 }
-

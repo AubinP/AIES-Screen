@@ -17,14 +17,12 @@ public:
     QString getRefreshTime();
     QString getUrgencyState();
     QString getZone(QString mac);
-    QString savePresence();
-    QString saveTemperature();
+    void setCapteurs(QString Query);
+    QString getCurrentrpi(QString macaddr);
+
 private:
     QSqlDatabase Aies_bdd;
     QSqlQuery Aies_query;
-
-    float temp;
-    bool presence;
 
     QString query;
     QString databaseType;

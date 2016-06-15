@@ -14,8 +14,6 @@ public:
     CBdd();
     ~CBdd();
     QString getRpi();
-    QString getRefreshTime();
-    QString getUrgencyState();
     QString getZone(QString mac);
     void setCapteurs(QString Query);
     QString getCurrentrpi(QString macaddr);

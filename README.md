@@ -1,2 +1,2 @@
-# aies
-aies is a Qt project. Connect to a DB, show captor value, hours and web pages on a screen.
+# Aies
+Final exam Qt project. Embedded software on Raspberry. Write to a database and display captors values, dates and web pages slides on screens.
